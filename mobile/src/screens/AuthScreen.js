@@ -56,8 +56,16 @@ export default function AuthScreen({ navigation }) {
 
   return (
     <LinearGradient colors={C.gradBg} style={styles.grad}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+      >
+        <ScrollView 
+          contentContainerStyle={[styles.scroll, { flexGrow: 1 }]} 
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
 
           {/* Header */}
           <Animated.View style={{ opacity: fadeIn, transform: [{ translateY: slideUp }], alignItems: 'center', marginTop: 60, marginBottom: 36 }}>
@@ -150,7 +158,7 @@ export default function AuthScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   grad:       { flex: 1 },
-  scroll:     { padding: 20, paddingBottom: 40 },
+  scroll:     { padding: 20, paddingBottom: 100 },
   logo:       { fontSize: 52, fontWeight: '900', color: C.accent, letterSpacing: 8 },
   title:      { fontSize: 30, fontWeight: '800', color: C.text, marginTop: 8 },
   tagline:    { ...T.sub, marginTop: 6, textAlign: 'center' },
