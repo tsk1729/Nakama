@@ -15,7 +15,6 @@ services:
           --session.encryption_key "ttt-session-secret" \
           --console.port 7351 \
           --name tic-tac-server
-    restart: unless-stopped
     ports:
       - "7350:7350"
       - "7351:7351"
