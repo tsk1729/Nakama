@@ -1,6 +1,7 @@
 services:
   nakama:
     image: heroiclabs/nakama:3.22.0
+    platform: linux/arm64/v8
     restart: unless-stopped
     entrypoint:
       - /bin/sh
@@ -24,6 +25,7 @@ services:
       - postgres
   postgres:
     image: postgres:16
+    platform: linux/arm64/v8
     environment:
       POSTGRES_PASSWORD: password
     ports:
