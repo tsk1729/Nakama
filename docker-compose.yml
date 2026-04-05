@@ -1,0 +1,49 @@
+services:
+  nakama:
+    image: heroiclabs/nakama:3.17.0
+    platform: linux/amd64
+    entrypoint:
+      - /bin/sh
+      - -ecx
+      - >
+        /nakama/nakama migrate up --database.address postgres:password@postgres:5432/postgres &&
+        exec /nakama/nakama --database.address postgres:password@postgres:5432/postgres \
+          --runtime.path /data/modules \
+          --runtime.js_entrypoint tictactoe.js \
+          --session.token_expiry_sec 7200 \
+          --session.refresh_token_expiry_sec 5184000 \
+          --session.encryption_key "ttt-session-secret" \
+          --console.port 7351 \
+          --name tic-tac-server
+    restart: unless-stopped
+    ports:
+      - "7350:7350"
+      - "7351:7351"
+    volumes:
+      - ./server/modules:/data/modules
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  frontend:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+      args:
+        - EXPO_PUBLIC_NAKAMA_HOST=${NAKAMA_HOST:-127.0.0.1}
+        - EXPO_PUBLIC_NAKAMA_PORT=7350
+        - EXPO_PUBLIC_NAKAMA_KEY=defaultkey
+    ports:
+      - "8081:80"
+    depends_on:
+      - nakama
+
+volumes:
+  postgres_data:
