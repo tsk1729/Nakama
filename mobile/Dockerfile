@@ -22,7 +22,7 @@ ARG EXPO_PUBLIC_NAKAMA_PORT=7350
 ARG EXPO_PUBLIC_NAKAMA_KEY=defaultkey
 
 # Build the web-optimized static application
-RUN pnpm npx expo export --platform web --no-pwa
+RUN pnpm npx expo export --platform web
 
 # Production Stage
 FROM nginx:stable-alpine
