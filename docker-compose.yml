@@ -23,7 +23,7 @@ services:
     depends_on:
       - postgres
   postgres:
-    image: postgres:latest
+    image: postgres:16
     environment:
       POSTGRES_PASSWORD: password
     ports:
